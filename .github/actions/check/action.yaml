@@ -1,0 +1,23 @@
+name: Check
+description: 'This action runs the Terraform fmt and validate commands'
+
+runs:
+  using: "composite"
+  steps:
+    - name: checkout
+      uses: actions/checkout@v3
+    - name: setup
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: 1.3.6
+    - name: format
+      shell: bash
+      run: terraform fmt -check -diff
+    - name: init
+      shell: bash
+      run: terraform init
+    - name: validate
+      shell: bash
+      run: terraform validate -no-color
+      env:
+        TF_IN_AUTOMATION: true
